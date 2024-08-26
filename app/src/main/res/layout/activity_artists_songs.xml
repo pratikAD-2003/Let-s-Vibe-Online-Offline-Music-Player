@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bLight_4"
+    tools:context=".ArtistList.ArtistsSongs">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/backFromArtistSongs"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:tint="@color/white"
+        android:src="@drawable/back"
+        android:paddingEnd="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:elevation="5dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
+        android:background="@drawable/oval_shape_item"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/bigPicItem"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/uyghjkhgvbn"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_alignBottom="@id/bigPicItem"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="-60dp"
+                android:background="@color/bLight_6"
+                app:shapeAppearanceOverlay="@style/roundedImageview">
+
+            </com.google.android.material.imageview.ShapeableImageView>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/artisImgItems"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignBaseline="@+id/uyghjkhgvbn"
+                android:layout_alignStart="@+id/uyghjkhgvbn"
+                android:layout_alignTop="@+id/uyghjkhgvbn"
+                android:layout_alignEnd="@+id/uyghjkhgvbn"
+                android:layout_alignBottom="@+id/uyghjkhgvbn"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                app:shapeAppearanceOverlay="@style/roundedImageview" />
+
+            <TextView
+                android:id="@+id/artisNameItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bigPicItem"
+                android:layout_alignBottom="@id/uyghjkhgvbn"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/uyghjkhgvbn"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/white"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/lkjhnkhjk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/uyghjkhgvbn"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Albums"
+                android:textColor="@color/white"
+                android:textSize="22dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/artistsTracksRecylcerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lkjhnkhjk"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bLight_4"
+    tools:context=".Favorite.MyFavorite">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/backFromFavorite"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/oval_shape_item"
+        android:elevation="5dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:src="@drawable/back"
+        android:tint="@color/white" />
+
+
+    <TextView
+        android:id="@+id/youDontHaveTracksFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/backFromFavorite"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:lineSpacingExtra="6dp"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:text="You don't have Favorite any Track yet! "
+        android:textColor="@color/white"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/gvhjjhghdfdfj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/backFromFavorite"
+        android:fontFamily="@font/inter_medium"
+        android:text="Favorite Tracks"
+        android:textColor="@color/white"
+        android:textSize="22dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoriteTracksRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gvhjjhghdfdfj"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp" />
+
+</RelativeLayout>

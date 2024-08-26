@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bLight_1">#000606</color>
+    <color name="bLight_2">#000d0d</color>
+    <color name="bLight_3">#001313</color>
+    <color name="bLight_4">#001a1a</color>
+    <color name="bLight_5">#002121</color>
+    <color name="bLight_6">#002727</color>
+    <color name="bLight_7">#002e2e</color>
+    <color name="bLight_8">#003434</color>
+    <color name="bLight_9">#003b3b</color>
+</resources>
