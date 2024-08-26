@@ -23,15 +23,6 @@ public class ArtistsTrackModel {
         this.artistName = artistName;
     }
 
-    public ArtistsTrackModel(long id, String name, String imgUri, long songsId, String artistName, long duration) {
-        this.id = id;
-        this.name = name;
-        this.imgUri = imgUri;
-        this.songsId = songsId;
-        this.artistName = artistName;
-        this.duration = duration;
-    }
-
     public ArtistsTrackModel() {
     }
 

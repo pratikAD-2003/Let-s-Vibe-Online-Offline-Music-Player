@@ -83,6 +83,13 @@ public class PlayTrackScreen extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("LIST", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        mediaPlayerManager = MediaPlayerManager.getInstance();
+        if (mediaPlayerManager.getMediaPlayer() != null && mediaPlayerManager.getMediaPlayer().isPlaying()) {
+            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.pause));
+        } else if (mediaPlayerManager.getMediaPlayer() != null && !mediaPlayerManager.getMediaPlayer().isPlaying()) {
+            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.play_button));
+        }
+
         type = getIntent().getStringExtra("type");
         if (Objects.equals(type, "downloaded")) {
             binding.showPlayListPTS.setVisibility(View.INVISIBLE);
@@ -343,6 +350,7 @@ public class PlayTrackScreen extends AppCompatActivity {
             Glide.with(this).load(list.get(currentPosition).getImgUri()).into(binding.trackImgPTS);
             binding.trackNamePTS.setText(list.get(currentPosition).getName());
             binding.trackArtistNamePTS.setText(list.get(currentPosition).getArtistName());
+            binding.songDurationPTS.setText(convertMillisToTrackDuration((int) list.get(currentPosition).getDuration()));
             getAlbumData(list.get(currentPosition).getId(), list.get(currentPosition).getSongsId());
         }
     }
@@ -395,6 +403,18 @@ public class PlayTrackScreen extends AppCompatActivity {
                     binding.songCompletedDurPTS.setText("00:00");
                     binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.play_button));
                     handler.removeCallbacks(updateSeekBarRunnable);
+
+                    if (Objects.equals(type, "downloaded")) {
+                        if (currentPosition != list2.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    } else if (Objects.equals(type, "online")) {
+                        if (currentPosition != list.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    }
                 }
             });
         }
@@ -448,7 +468,7 @@ public class PlayTrackScreen extends AppCompatActivity {
                             for (int i = 0; i < albumModel.getTracks().getData().size(); i++) {
                                 if (albumModel.getTracks().getData().get(i).getId() == songId) {
                                     songUri = albumModel.getTracks().getData().get(i).getPreview();
-                                    binding.songDurationPTS.setText(convertMillisToTrackDuration(albumModel.getTracks().getData().get(i).getDuration()));
+                                    binding.songDurationPTS.setText(getTotalDuration(albumModel.getTracks().getData().get(i).getDuration()));
 //                                    playTrackByUri(PlayTrackScreen.this, Uri.parse(songUri));
                                     playSong(Uri.parse(songUri));
                                 }
@@ -576,15 +596,18 @@ public class PlayTrackScreen extends AppCompatActivity {
     }
 
     public String convertMillisToTrackDuration(int milliseconds) {
-        int totalSeconds = milliseconds / 1000;
+        int totalSeconds = (int) Math.ceil(milliseconds / 1000.0);
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
 
-        if (minutes > 0) {
-            return String.format("%02d:%02d", minutes, seconds);
-        } else {
-            return String.format("00:%02d", seconds);
-        }
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public String getTotalDuration(int secondsInput) {
+        int minutes = secondsInput / 60;
+        int seconds = secondsInput % 60;
+
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     @Override
