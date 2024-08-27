@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.musicplayer.Favorite.FavoriteTrackAdapter;
+import com.example.musicplayer.Model.ArtistsTrackModel;
 import com.example.musicplayer.PlayTrack.PlayTrackScreen;
 import com.example.musicplayer.R;
 import com.example.musicplayer.databinding.ArtistsTracksItemsBinding;
@@ -21,12 +23,20 @@ import java.util.ArrayList;
 public class DownAdapter extends RecyclerView.Adapter<DownAdapter.DownHolder> {
     Context context;
     ArrayList<DownTrackModel> list = new ArrayList<>();
-
     DownTracksItemsBinding binding;
-
+    FavoriteTrackAdapter.OnItemClickListener listener;
+    public interface OnItemClickListener {
+        void onItemClick(ArtistsTrackModel item);
+    }
     public DownAdapter(Context context, ArrayList<DownTrackModel> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public DownAdapter(Context context, ArrayList<DownTrackModel> list, FavoriteTrackAdapter.OnItemClickListener listener) {
+        this.context = context;
+        this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -39,7 +49,8 @@ public class DownAdapter extends RecyclerView.Adapter<DownAdapter.DownHolder> {
     @Override
     public void onBindViewHolder(@NonNull DownHolder holder, int position) {
         if (list.get(position).getImage() != null) {
-            Glide.with(context).load(list.get(position).getImage()).into(holder.binding.trackImgItems);
+//            Glide.with(context).load(list.get(position).getImage()).into(holder.binding.trackImgItems);
+            Glide.with(context).load(context.getDrawable(R.drawable.no_available)).into(holder.binding.trackImgItems);
         } else {
             Glide.with(context).load(context.getDrawable(R.drawable.no_available)).into(holder.binding.trackImgItems);
         }
@@ -60,6 +71,7 @@ public class DownAdapter extends RecyclerView.Adapter<DownAdapter.DownHolder> {
                 Gson gson = new Gson();
                 String myList = gson.toJson(list);
                 intent.putExtra("list",myList);
+                listener.onItemClick(new ArtistsTrackModel());
                 context.startActivity(intent);
             }
         });

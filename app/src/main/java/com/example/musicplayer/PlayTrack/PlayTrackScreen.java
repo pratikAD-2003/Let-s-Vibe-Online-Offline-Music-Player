@@ -92,7 +92,8 @@ public class PlayTrackScreen extends AppCompatActivity {
 
         type = getIntent().getStringExtra("type");
         if (Objects.equals(type, "downloaded")) {
-            binding.showPlayListPTS.setVisibility(View.INVISIBLE);
+            binding.showPlayListPTS.setVisibility(View.VISIBLE);
+//            binding.showPlayListPTS.setVisibility(View.INVISIBLE);
             binding.likedThatTrack.setVisibility(View.INVISIBLE);
             currentPosition = getIntent().getIntExtra("position", 0);
             String myList = getIntent().getStringExtra("list");
@@ -124,7 +125,7 @@ public class PlayTrackScreen extends AppCompatActivity {
                 if (!checkAlreadyInMyList(list.get(currentPosition).getSongsId())) {
                     insertInMyLastSession(list.get(currentPosition).getId(), list.get(currentPosition).getSongsId(), list.get(currentPosition).getName(), list.get(currentPosition).getImgUri(), list.get(currentPosition).getArtistName());
                 } else {
-                    Toast.makeText(this, "Already in list!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Already in list!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -161,19 +162,44 @@ public class PlayTrackScreen extends AppCompatActivity {
                 } else if (Objects.equals(type, "online")) {
                     if (currentPosition != list.size() - 1) {
                         selectedSong(currentPosition += 1);
+                        if (!checkAlreadyInMyList(list.get(currentPosition).getSongsId())) {
+                            insertInMyLastSession(list.get(currentPosition).getId(), list.get(currentPosition).getSongsId(), list.get(currentPosition).getName(), list.get(currentPosition).getImgUri(), list.get(currentPosition).getArtistName());
+                        } else {
+//                            Toast.makeText(PlayTrackScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+
             }
         });
 
         binding.prevSongPTS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentPosition > 0) {
-                    binding.prevSongPTS.setVisibility(View.VISIBLE);
-                    selectedSong(currentPosition -= 1);
-                } else {
-                    binding.prevSongPTS.setVisibility(View.INVISIBLE);
+//                if (currentPosition > 0) {
+//                    binding.prevSongPTS.setVisibility(View.VISIBLE);
+//                    selectedSong(currentPosition -= 1);
+//                    if (!checkAlreadyInMyList(list.get(currentPosition).getSongsId())) {
+//                        insertInMyLastSession(list.get(currentPosition).getId(), list.get(currentPosition).getSongsId(), list.get(currentPosition).getName(), list.get(currentPosition).getImgUri(), list.get(currentPosition).getArtistName());
+//                    } else {
+////                        Toast.makeText(PlayTrackScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    binding.prevSongPTS.setVisibility(View.INVISIBLE);
+//                }
+                if (Objects.equals(type, "downloaded")) {
+                    if (list2.size() > 0) {
+                        selectedSong(currentPosition -= 1);
+                    }
+                } else if (Objects.equals(type, "online")) {
+                    if (list.size() > 0) {
+                        selectedSong(currentPosition -= 1);
+                        if (!checkAlreadyInMyList(list.get(currentPosition).getSongsId())) {
+                            insertInMyLastSession(list.get(currentPosition).getId(), list.get(currentPosition).getSongsId(), list.get(currentPosition).getName(), list.get(currentPosition).getImgUri(), list.get(currentPosition).getArtistName());
+                        } else {
+//                            Toast.makeText(PlayTrackScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
@@ -191,6 +217,12 @@ public class PlayTrackScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putLong("albumId", albumId);
+                bundle.putString("type", type);
+                if (Objects.equals(type, "downloaded")) {
+                    Gson gson = new Gson();
+                    String myList = gson.toJson(list2);
+                    bundle.putString("list", myList);
+                }
                 ShowRelatedTracksDialog showRelatedTracksDialog = new ShowRelatedTracksDialog();
                 showRelatedTracksDialog.setArguments(bundle);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -330,7 +362,8 @@ public class PlayTrackScreen extends AppCompatActivity {
             if (list2.get(currentPosition).getImage() == null) {
                 Glide.with(this).load(getDrawable(R.drawable.no_available)).into(binding.trackImgPTS);
             } else {
-                Glide.with(this).load(list2.get(currentPosition).getImage()).into(binding.trackImgPTS);
+                Glide.with(this).load(getDrawable(R.drawable.no_available)).into(binding.trackImgPTS);
+//                Glide.with(this).load(list2.get(currentPosition).getImage()).into(binding.trackImgPTS);
             }
             binding.trackNamePTS.setText(list2.get(currentPosition).getTitle());
             binding.trackArtistNamePTS.setText(list2.get(currentPosition).getArtistName());
@@ -515,7 +548,7 @@ public class PlayTrackScreen extends AppCompatActivity {
 
     private void AlreadyPlaying() {
         if (Objects.equals(type, "downloaded")) {
-            binding.showPlayListPTS.setVisibility(View.INVISIBLE);
+//            binding.showPlayListPTS.setVisibility(View.INVISIBLE);
             binding.likedThatTrack.setVisibility(View.INVISIBLE);
             if (currentPosition == list2.size() - 1) {
                 binding.nextSongPTS.setVisibility(View.INVISIBLE);
@@ -528,7 +561,8 @@ public class PlayTrackScreen extends AppCompatActivity {
             if (list2.get(currentPosition).getImage() == null) {
                 Glide.with(this).load(getDrawable(R.drawable.no_available)).into(binding.trackImgPTS);
             } else {
-                Glide.with(this).load(list2.get(currentPosition).getImage()).into(binding.trackImgPTS);
+                Glide.with(this).load(getDrawable(R.drawable.no_available)).into(binding.trackImgPTS);
+//                Glide.with(this).load(list2.get(currentPosition).getImage()).into(binding.trackImgPTS);
             }
             binding.trackNamePTS.setText(list2.get(currentPosition).getTitle());
             binding.trackArtistNamePTS.setText(list2.get(currentPosition).getArtistName());
@@ -590,6 +624,17 @@ public class PlayTrackScreen extends AppCompatActivity {
                     binding.songSeekbarPTS.setProgress(0);
                     binding.songCompletedDurPTS.setText("00:00");
                     handler.removeCallbacks(updateSeekBarRunnable);
+                    if (Objects.equals(type, "downloaded")) {
+                        if (currentPosition != list2.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    } else if (Objects.equals(type, "online")) {
+                        if (currentPosition != list.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            binding.playSongBtnPTS.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    }
                 }
             });
         }

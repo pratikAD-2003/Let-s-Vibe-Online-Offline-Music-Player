@@ -64,8 +64,8 @@ public class LastSessionAdapter extends RecyclerView.Adapter<LastSessionAdapter.
         Glide.with(context).load(list.get(position).getImgUri()).into(holder.binding.trackImgItems);
 //        holder.binding.trackTitleItems.setText(list.get(position).getName());
 
-        if (list.get(position).getName().length() > 27) {
-            holder.binding.trackTitleItems.setText(list.get(position).getName().substring(0, 24) + "...");
+        if (list.get(position).getName().length() > 23) {
+            holder.binding.trackTitleItems.setText(list.get(position).getName().substring(0, 20) + "...");
         } else {
             holder.binding.trackTitleItems.setText(list.get(position).getName());
         }

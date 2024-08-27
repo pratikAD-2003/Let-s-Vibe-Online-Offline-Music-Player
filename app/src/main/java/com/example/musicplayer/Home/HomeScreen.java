@@ -143,7 +143,8 @@ public class HomeScreen extends AppCompatActivity {
                     }
                 }
                 if (downTrackModels.get(currentPosition).getImage() != null) {
-                    Glide.with(HomeScreen.this).load(downTrackModels.get(currentPosition).getImage()).into(playingSongImage);
+//                    Glide.with(HomeScreen.this).load(downTrackModels.get(currentPosition).getImage()).into(playingSongImage);
+                    Glide.with(HomeScreen.this).load(getDrawable(R.drawable.no_available)).into(playingSongImage);
                 } else {
                     Glide.with(HomeScreen.this).load(getDrawable(R.drawable.no_available)).into(playingSongImage);
                 }
@@ -310,10 +311,12 @@ public class HomeScreen extends AppCompatActivity {
                 playingBtn.setImageDrawable(getDrawable(R.drawable.pause));
                 editor.putInt("position", currentPosition);
                 editor.apply();
-                if (!checkAlreadyInMyList(artistsTrackModels.get(currentPosition).getSongsId())) {
-                    insertInMyLastSession(artistsTrackModels.get(currentPosition).getId(), artistsTrackModels.get(currentPosition).getSongsId(), artistsTrackModels.get(currentPosition).getName(), artistsTrackModels.get(currentPosition).getImgUri(), artistsTrackModels.get(currentPosition).getArtistName());
-                } else {
-                    Toast.makeText(HomeScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                if (Objects.equals(type, "online")) {
+                    if (!checkAlreadyInMyList(artistsTrackModels.get(currentPosition).getSongsId())) {
+                        insertInMyLastSession(artistsTrackModels.get(currentPosition).getId(), artistsTrackModels.get(currentPosition).getSongsId(), artistsTrackModels.get(currentPosition).getName(), artistsTrackModels.get(currentPosition).getImgUri(), artistsTrackModels.get(currentPosition).getArtistName());
+                    } else {
+//                    Toast.makeText(HomeScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -326,10 +329,12 @@ public class HomeScreen extends AppCompatActivity {
                 playingBtn.setImageDrawable(getDrawable(R.drawable.pause));
                 editor.putInt("position", currentPosition);
                 editor.apply();
-                if (!checkAlreadyInMyList(artistsTrackModels.get(currentPosition).getSongsId())) {
-                    insertInMyLastSession(artistsTrackModels.get(currentPosition).getId(), artistsTrackModels.get(currentPosition).getSongsId(), artistsTrackModels.get(currentPosition).getName(), artistsTrackModels.get(currentPosition).getImgUri(), artistsTrackModels.get(currentPosition).getArtistName());
-                } else {
-                    Toast.makeText(HomeScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                if (Objects.equals(type, "online")) {
+                    if (!checkAlreadyInMyList(artistsTrackModels.get(currentPosition).getSongsId())) {
+                        insertInMyLastSession(artistsTrackModels.get(currentPosition).getId(), artistsTrackModels.get(currentPosition).getSongsId(), artistsTrackModels.get(currentPosition).getName(), artistsTrackModels.get(currentPosition).getImgUri(), artistsTrackModels.get(currentPosition).getArtistName());
+                    } else {
+//                    Toast.makeText(HomeScreen.this, "Already in list!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -339,11 +344,11 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if (Objects.equals(type, "downloaded")) {
                     Intent intent = new Intent(HomeScreen.this, PlayTrackScreen.class);
-                    intent.putExtra("position",currentPosition);
-                    intent.putExtra("type","downloaded");
+                    intent.putExtra("position", currentPosition);
+                    intent.putExtra("type", "downloaded");
                     Gson gson = new Gson();
                     String myList = gson.toJson(downTrackModels);
-                    intent.putExtra("list",myList);
+                    intent.putExtra("list", myList);
                     startActivity(intent);
                 } else if (Objects.equals(type, "online")) {
                     Intent intent = new Intent(HomeScreen.this, PlayTrackScreen.class);
@@ -394,7 +399,8 @@ public class HomeScreen extends AppCompatActivity {
                 }
             }
             if (downTrackModels.get(currentPosition).getImage() != null) {
-                Glide.with(HomeScreen.this).load(downTrackModels.get(currentPosition).getImage()).into(playingSongImage);
+//                Glide.with(HomeScreen.this).load(downTrackModels.get(currentPosition).getImage()).into(playingSongImage);
+                Glide.with(HomeScreen.this).load(getDrawable(R.drawable.no_available)).into(playingSongImage);
             } else {
                 Glide.with(HomeScreen.this).load(getDrawable(R.drawable.no_available)).into(playingSongImage);
             }
@@ -625,6 +631,17 @@ public class HomeScreen extends AppCompatActivity {
 //                    binding.songCompletedDurPTS.setText("00:00");
                     playingBtn.setImageDrawable(getDrawable(R.drawable.play_button));
                     handler.removeCallbacks(updateSeekBarRunnable);
+                    if (Objects.equals(type, "downloaded")) {
+                        if (currentPosition != downTrackModels.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            playingBtn.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    } else if (Objects.equals(type, "online")) {
+                        if (currentPosition != artistsTrackModels.size() - 1) {
+                            selectedSong(currentPosition += 1);
+                            playingBtn.setImageDrawable(getDrawable(R.drawable.pause));
+                        }
+                    }
                 }
             });
         }

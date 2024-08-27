@@ -23,6 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.musicplayer.Adaptors.ArtistsTracksAdapter;
+import com.example.musicplayer.Downloaded.DownAdapter;
+import com.example.musicplayer.Downloaded.DownTrackModel;
+import com.example.musicplayer.Favorite.FavoriteTrackAdapter;
 import com.example.musicplayer.Model.AlbumModel.AlbumModel;
 import com.example.musicplayer.Model.ArtistsTrackModel;
 import com.example.musicplayer.PlayTrack.adaptors.RelatedTracksAdapter;
@@ -33,10 +36,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ShowRelatedTracksDialog extends BottomSheetDialogFragment {
 
@@ -48,6 +54,8 @@ public class ShowRelatedTracksDialog extends BottomSheetDialogFragment {
     private String mParam2;
     FragmentShowRelatedTracksDialogBinding binding;
     long albumId = 0;
+    String type = "";
+    ArrayList<DownTrackModel> list;
 
     public ShowRelatedTracksDialog() {
         // Required empty public constructor
@@ -76,9 +84,12 @@ public class ShowRelatedTracksDialog extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentShowRelatedTracksDialogBinding.inflate(inflater, container, false);
+        list = new ArrayList<>();
+        Gson gson = new Gson();
         // Inflate the layout for this fragment
         assert getArguments() != null;
-        albumId = getArguments().getLong("albumId");
+        type = getArguments().getString("type");
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -86,7 +97,22 @@ public class ShowRelatedTracksDialog extends BottomSheetDialogFragment {
         binding.relatedTracksRecyclerviewSRTD.setLayoutManager(linearLayoutManager);
         binding.relatedTracksRecyclerviewSRTD.setHasFixedSize(true);
         binding.relatedTracksRecyclerviewSRTD.addItemDecoration(itemDecoration);
-        getAlbumData(albumId);
+        if (Objects.equals(type, "downloaded")) {
+            String myList = getArguments().getString("list");
+            Type listType = new TypeToken<ArrayList<DownTrackModel>>() {
+            }.getType();
+            list = gson.fromJson(myList, listType);
+            DownAdapter downAdapter = new DownAdapter(getContext(), list, new FavoriteTrackAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(ArtistsTrackModel item) {
+                    dismiss();
+                }
+            });
+            binding.relatedTracksRecyclerviewSRTD.setAdapter(downAdapter);
+        } else if (Objects.equals(type, "online")) {
+            albumId = getArguments().getLong("albumId");
+            getAlbumData(albumId);
+        }
 
         return binding.getRoot();
     }
